@@ -20,7 +20,13 @@ local Settings = {
 	CategoryPadding = 0,
 
 	PrintTitle = true,
-	TitleText = "Craftana - Fusion Dashboard"
+	TitleText = "Craftana - Fusion Dashboard",
+
+	ShowTritium = true,
+	ShowInputBuffer = true,
+	ShowReactor = true,
+	ShowTurbine = false,
+	IsCooled = false
 }
 
 local ColorMap = {
@@ -70,28 +76,33 @@ if(Const.IsCliMode) then
 	Settings.PrintCategories = false
 end
 
-local ContentLayout = {
-	{
-		key = "tritium",
-		text = "Tritium Plant",
-		items = {
-			"water",
-			"water heating temperature",
-			"brine production",
-			"brine",
-			"brine heating temperature",
-			"lithium production",
-			"lithium",
-			"tritium production"
-		}
-	}, {
-		key = "buffer",
-		text = "Input Buffer",
-		items = {
-			"tritium",
-			"deuterium",
-		}
-	}, {
+local ContentTritium = {
+	key = "tritium",
+	text = "Tritium Plant",
+	items = {
+		"water",
+		"water heating temperature",
+		"brine production",
+		"brine",
+		"brine heating temperature",
+		"lithium production",
+		"lithium",
+		"tritium production"
+	}
+}
+
+local ContentBuffer = {
+	key = "buffer",
+	text = "Input Buffer",
+	items = {
+		"tritium",
+		"deuterium",
+	}
+}
+
+ContentReactor = {}
+if(Settings.IsCooled) then
+	ContentReactor = {
 		key = "fusion",
 		text = "Reactor",
 		items = {
@@ -104,17 +115,50 @@ local ContentLayout = {
 			"steam production",
 			"steam"
 		}
-	}, {
-		key = "turbine",
-		text = "Turbine",
+	}
+else
+	ContentReactor = {
+		key = "fusion",
+		text = "Reactor",
 		items = {
-			"steam flow rate",
-			"steam",
-			"energy production",
-			"energy"
+			"water",
+			"injection rate",
+			"d-t fuel",
+			"plasma temperature",
+			"case temperature",
+			"energy",
+			"energy production"
 		}
 	}
+end
+
+local ContentTurbine = {
+	key = "turbine",
+	text = "Turbine",
+	items = {
+		"steam flow rate",
+		"steam",
+		"energy production",
+		"energy"
+	}
 }
+
+local ContentLayout = {}
+if(Settings.ShowTritium) then
+	table.insert(ContentLayout, ContentTritium)
+end
+
+if(Settings.ShowInputBuffer) then
+	table.insert(ContentLayout, ContentBuffer)
+end
+
+if(Settings.ShowReactor) then
+	table.insert(ContentLayout, ContentReactor)
+end
+
+if(Settings.ShowTurbine) then
+	table.insert(ContentLayout, ContentTurbine)
+end
 
 local AverageValues = {
 	"water heating temperature",
