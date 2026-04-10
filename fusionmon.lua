@@ -501,10 +501,19 @@ function ProcessFusionLogic(timestamp, p)
 			UpdateTable(timestamp, "injection rate", injectionRate/1000, 99/1000, category, "b/t", ColorMap.d_t_fuel)
 		end
 	end
+	if(steamAmount ~= nil and steamCapacity ~= nil) then
+			isActiveCooled = true
+	end
 	if (p.getProductionRate ~= nil) then
 		local productionRate = p.getProductionRate()
 		if (productionRate ~= nil) then
 			UpdateTable(timestamp, "steam production", productionRate/1000, productionRate/1000, category, "b/t", ColorMap.steam)
+		end
+	end
+	if (p.getPassiveGeneration ~= nil) then
+		local passiveGeneration = p.getPassiveGeneration(isActiveCooled)
+		if (passiveGeneration ~= nil) then
+			UpdateTable(timestamp, "energy production", passiveGeneration/2.5, passiveGeneration/2.5, category, "FE/t", ColorMap.energy)
 		end
 	end
 	if(p.getSteam ~= nil and p.getSteamCapacity  ~= nil) then
@@ -514,8 +523,7 @@ function ProcessFusionLogic(timestamp, p)
 		if(steam ~= nil) then
 			steamAmount = steam.amount
 		end
-		if(steamAmount ~= nil and steamCapacity ~= nil) then
-			isActiveCooled = true
+		if(isActiveCooled) then
 			UpdateTable(timestamp, "steam", steamAmount/1000, steamCapacity/1000, category, "b", ColorMap.steam)
 		end
 	end
@@ -526,8 +534,7 @@ function ProcessFusionLogic(timestamp, p)
 		if(water ~= nil) then
 			waterAmount = water.amount
 		end
-		if(waterAmount ~= nil and waterCapacity ~= nil) then
-			isActiveCooled = true
+		if(isActiveCooled) then
 			UpdateTable(timestamp, "water", waterAmount/1000, waterCapacity/1000, category, "b", ColorMap.water)
 		end
 	end
@@ -577,7 +584,7 @@ function ProcessFusionPort(timestamp, p)
 		local energy = p.getEnergy()
 		local maxEnergy = p.getMaxEnergy()
 		if(energy ~= nil and maxEnergy ~= nil) then
-			UpdateTable(timestamp, "energy", energy, maxEnergy, category, "FE", ColorMap.energy)
+			UpdateTable(timestamp, "energy", energy/2.5, maxEnergy/2.5, category, "FE", ColorMap.energy)
 		end
 	end
 end
@@ -610,7 +617,7 @@ function ProcessTurbine(timestamp, p)
 		local productionRate = p.getProductionRate()
 		local maxProduction = p.getMaxProduction()
 		if (productionRate ~= nil and maxProduction ~= nil) then
-			UpdateTable(timestamp,"energy production", productionRate, maxProduction, category, "FE/t", ColorMap.energy)
+			UpdateTable(timestamp,"energy production", productionRate/2.5, maxProduction/2.5, category, "FE/t", ColorMap.energy)
 		end
 	end
 
@@ -618,7 +625,7 @@ function ProcessTurbine(timestamp, p)
 		local energy = p.getEnergy()
 		local maxEnergy = p.getMaxEnergy()
 		if(energy ~= nil and maxEnergy ~= nil) then
-			UpdateTable(timestamp, "energy", energy, maxEnergy, category, "FE", ColorMap.energy)
+			UpdateTable(timestamp, "energy", energy/2.5, maxEnergy/2.5, category, "FE", ColorMap.energy)
 		end
 	end
 end
