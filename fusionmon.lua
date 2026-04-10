@@ -900,17 +900,17 @@ function PrintMonitorStat(mon, strName, strAmount, strMax, strLegend, barColor)
 
 	local formattedAmount, unit = strAmount, ""
 	-- Determine the unit and format the amount accordingly
-	if (strAmount >= 1099511627776) then
-		formattedAmount = math.floor(strAmount / 1099511627776)
+	if (strAmount >= 1000000000000) then
+		formattedAmount = math.floor(strAmount / 1000000000000)
 		unit = "T"
-	elseif (strAmount >= 1073741824) then
-		formattedAmount = math.floor(strAmount / 1073741824)
+	elseif (strAmount >= 1000000000) then
+		formattedAmount = math.floor(strAmount / 1000000000)
 		unit = "G"
-	elseif (strAmount >= 1048576) then
-		formattedAmount = math.floor(strAmount / 1048576)
+	elseif (strAmount >= 1000000) then
+		formattedAmount = math.floor(strAmount / 1000000)
 		unit = "M"
-	elseif (strAmount >= 1024) then
-		formattedAmount = math.floor(strAmount / 1024)
+	elseif (strAmount >= 1000) then
+		formattedAmount = math.floor(strAmount / 1000)
 		unit = "K"
 	elseif (strAmount >= 100) then
 		formattedAmount = string.format("%.1f", strAmount)
